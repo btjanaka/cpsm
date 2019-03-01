@@ -40,6 +40,11 @@ structure should look something like this:
 Then, when you decide to save a file, it moves from the solving directory to its
 main directory.
 
+**Important! init and save modes are not implemented right now; I am working on
+them. In the meantime, you can always copy the cpsm_config.py module I have here
+and modify it yourself, instead of doing init. You can also just move file
+manually to substitute for save.**
+
 ## Installation
 
 To install, start by cloning this repo. Then, while in the repo, do:
@@ -83,6 +88,13 @@ Save that cpp file.
 
 ```
 cpsm s uva 12345 cpp
+```
+
+## Uninstallation
+
+Should you ever decide to uninstall cpsm :scream:, simply run:
+```
+pip uninstall cpsm
 ```
 
 ## TODO
