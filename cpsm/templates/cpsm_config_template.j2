@@ -8,7 +8,12 @@ editor = "{{ editor }}"
 # useful if your editor does not support files
 open_input = {{ open_input }}
 
-# Abbreviations for directories and full names of websites/contests/etc
+# Abbreviations for directories and full names of websites/competitions/etc.
+# Abbreviations should be of the following form:
+#   "abbrev": {
+#       "name": "(full name of website/competition/etc)",
+#       "dir": "(name of directory)",
+#   },
 abbreviations = {
 {% for a in abbrevs -%}
     "{{ a.abbrev }}": {
