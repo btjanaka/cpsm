@@ -14,7 +14,9 @@ setup(
     description=("Competitive Programming Solutions Manager"),
     long_description=readme(),
     long_description_content_type="text/markdown",
-    install_requires=[],
+    install_requires=[
+        "Jinja2==2.10",
+    ],
     extras_require={},
     license="MIT",
     keywords="chemistry molecules forcefield",

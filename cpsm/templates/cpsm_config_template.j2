@@ -1,0 +1,63 @@
+{# Jinja template file for CPSM's Python configuration file -#}
+# Configuration file for CPSM
+
+# Command to run for opening the files when starting a new solution
+editor = "{{ editor }}"
+
+# Should CPSM open the input file along with the code file? This is particularly
+# useful if your editor does not support files
+open_input = {{ open_input }}
+
+# Abbreviations for directories and full names of websites/contests/etc
+abbreviations = {
+{% for a in abbrevs -%}
+    "{{ a.abbrev }}": {
+        "name": "{{ a.name }}",
+        "dir": "{{ a.dir }}",
+    },
+{%- endfor %}
+}
+
+# Mapping of strings that can be inserted into the templates below. Note that
+# the following keys are reserved for use by CPSM:
+#   "name" - the name of the website/competition/etc for the problem
+#   "problem_name" - the title of the problem
+# If you include these keys, they simply will not be used.
+mappings = {
+    "username": "{{ username }}",
+    "fullname": "{{ fullname }}",
+}
+
+{# Use raw here to allow templates to be easily written -#}
+{% raw -%}
+# Mapping of languages to templates. Substitution is done using Jinja's
+# Template.render(), with the mappings shown above. Refer to the Jinja docs
+# at http://jinja.pocoo.org/docs/2.10/ for more info.
+templates = {
+    "cpp":
+    """\
+// Author: {{username}} ({{fullname}})
+// Problem: ({{name}}) {{problem_name}}
+#include <bits/stdc++.h>
+#define GET(x) scanf("%d", &x)
+#define GED(x) scanf("%lf", &x)
+typedef long long ll;
+using namespace std;
+typedef pair<int, int> ii;
+
+int main() {
+
+  return 0;
+}
+""",
+    "py":
+    """\
+# Author: {{username}} ({{fullname}})
+# Problem: ({{name}}) {{problem_name}}
+
+import sys
+from collections import defaultdict
+
+""",
+}
+{%- endraw %}

@@ -5,7 +5,9 @@
 - [Installation](#installation)
 - [Usage](#usage)
   - [Examples](#examples)
+- [Uninstallation](#uninstallation)
 - [TODO](#todo)
+- [Credits](#credits)
 
 <!-- tocstop -->
 
@@ -40,20 +42,21 @@ structure should look something like this:
 Then, when you decide to save a file, it moves from the solving directory to its
 main directory.
 
-**Important! init and save modes are not implemented right now; I am working on
-them. In the meantime, you can always copy the cpsm_config.py module I have here
-and modify it yourself, instead of doing init. You can also just move file
-manually to substitute for save.**
+**Important! save modes is not implemented right now; I am working on it. In the
+meantime, you can just move files manually to substitute for save.**
 
 ## Installation
 
-To install, start by cloning this repo. Then, while in the repo, do:
+CPSM requires Python 3.6 or later (compatibility with earlier versions may be
+coming soon, however). To install, start by cloning this repo. Then, while in
+the repo, do:
 
 ```
-pip install .
+pip install -e .
 ```
 
-Now, you should be able to run the command `cpsm`.
+Make sure you use the `-e` option! If you do not, Jinja will not be able to read
+the templates. Now, you should be able to run the command `cpsm`.
 
 In a directory where you want to create solutions, do
 
@@ -93,14 +96,28 @@ cpsm s uva 12345 cpp
 ## Uninstallation
 
 Should you ever decide to uninstall cpsm :scream:, simply run:
+
 ```
 pip uninstall cpsm
 ```
 
 ## TODO
 
-CPSM is under development. Here are some remaining tasks:
+CPSM is under (heavy) development. Here are some remaining tasks, in order of
+priority:
 
-- Create the init mode
-- Create the save mode
-- Add a CONTRIBUTING.md
+1. Create the save mode
+1. Add a demo video/gif
+1. Add a CONTRIBUTING.md
+1. Add checks for the current directories in init mode (may be undesirable)
+1. Enable compatibility with earlier Python (down to 3.4-3.5?), mainly by
+   eliminating f-strings
+1. Allow naming templates after something other than filetypes, to allow
+   multiple templates for a given filetype
+
+## Credits
+
+- [Kevin Wang](https://github.com/vitamintk), for encouraging me to push this to
+  a full project
+- [Tianjiao Huang](), for being a pre-pre-pre-beta tester and suggesting the use
+  of Jinja
