@@ -106,18 +106,21 @@ pip uninstall cpsm
 CPSM is under (heavy) development. Here are some remaining tasks, in order of
 priority:
 
-1. Create the save mode
-1. Add a demo video/gif
+1. Add documentation on config files to README
 1. Add a CONTRIBUTING.md
+1. Create the save mode
+1. Avoid having errors in create mode just because an input file already exists
+1. Add a demo video/gif
 1. Add checks for the current directories in init mode (may be undesirable)
 1. Enable compatibility with earlier Python (down to 3.4-3.5?), mainly by
    eliminating f-strings
 1. Allow naming templates after something other than filetypes, to allow
    multiple templates for a given filetype
+1. Make a website on Github Pages
 
 ## Credits
 
 - [Kevin Wang](https://github.com/vitamintk), for encouraging me to push this to
   a full project
-- [Tianjiao Huang](), for being a pre-pre-pre-beta tester and suggesting the use
+- [Tianjiao Huang](https://github.com/gitletH), for being a pre-pre-pre-beta tester and suggesting the use
   of Jinja
