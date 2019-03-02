@@ -1,5 +1,6 @@
 """Enables management of competitive programming solution files"""
 
+import importlib.util
 import jinja2
 import json
 import os
@@ -150,9 +151,12 @@ def init(args):
 def retrieve_config() -> "module":
     """Retrieves configuration info"""
     try:
-        import cpsm_config
-        return cpsm_config
-    except ModuleNotFoundError:
+        module_spec = importlib.util.spec_from_file_location(
+            "cpsm_config", "cpsm_config.py")
+        configs = importlib.util.module_from_spec(module_spec)
+        module_spec.loader.exec_module(configs)
+        return configs
+    except FileNotFoundError:
         error_and_exit("ERROR: you need a cpsm_config.py file!")
 
 
