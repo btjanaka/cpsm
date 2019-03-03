@@ -42,9 +42,6 @@ structure should look something like this:
 Then, when you decide to save a file, it moves from the solving directory to its
 main directory.
 
-**Important! save modes is not implemented right now; I am working on it. In the
-meantime, you can just move files manually to substitute for save.**
-
 ## Installation
 
 CPSM requires Python 3.6 or later (compatibility with earlier versions may be
@@ -81,17 +78,25 @@ USAGE: cpsm <mode> [args...]
 
 ### Examples
 
-Create a new cpp solution for uva 12345, in the uva/solving directory.
+Create a new cpp solution for the HackerRank problem "Journey to the Moon",
+where the abbreviation for HackerRank is `hr` and the directory for it is
+hackerrank.
 
 ```
-cpsm n uva 12345 cpp
+cpsm n hr "Journey to the Moon" cpp
 ```
 
-Save that cpp file.
+This creates a journey-to-the-moon.cpp and journey-to-the-moon.txt file in the
+hackerrank/solving file and opens up an editor where you can work on the files.
+Once you are done, you can move the files to the main hackerrank directory (i.e.
+"save" it) with the following command.
 
 ```
-cpsm s uva 12345 cpp
+cpsm s hr "Journey to the Moon" cpp
 ```
+
+Note that you do not need quotes around your problem title if your problem title
+has no spaces. For example, you can do `cpsm n uva 12345 cpp`.
 
 ## Uninstallation
 
@@ -101,22 +106,34 @@ Should you ever decide to uninstall cpsm :scream:, simply run:
 pip uninstall cpsm
 ```
 
+You may also want to remove your `cpsm_config.py` files if you are truly done
+with CPSM.
+
 ## TODO
 
 CPSM is under (heavy) development. Here are some remaining tasks, in order of
 priority:
 
-1. Add documentation on config files to README
-1. Add a CONTRIBUTING.md
-1. Create the save mode
+1. Make save mode not require a language spec
 1. Avoid having errors in create mode just because an input file already exists
-1. Add a demo video/gif
+1. Add documentation on config files to README
+1. Add more examples to README
+1. Add a demo gif to README
+1. Add NPM and use packages from it to automate linting, formatting, etc. for
+   the repo.
+1. Add a CONTRIBUTING.md
+1. Refactor command line argument parsing to make it easier to add modes
 1. Add checks for the current directories in init mode (may be undesirable)
+1. Check for existing input files in the main directory before creating a new
+   one (and query the user to see if they would like to use that file).
+1. Add a run mode to allow one to easily see output for a program and input
 1. Enable compatibility with earlier Python (down to 3.4-3.5?), mainly by
    eliminating f-strings
+1. Create a PyPI package
 1. Allow naming templates after something other than filetypes, to allow
    multiple templates for a given filetype
-1. Make a website on Github Pages
+1. Make a website on Github Pages - or a readthedocs page
+1. Integrate testing? [shUnit](https://github.com/kward/shunit2)
 
 ## Credits
 

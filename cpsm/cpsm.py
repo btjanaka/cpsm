@@ -52,10 +52,33 @@ def parse_commandline_flags() -> {str: "argument value"}:
 #
 
 
-def error_and_exit(msg: str):
-    """Prints an error and exits"""
-    print(msg, file=sys.stderr)
-    sys.exit(1)
+def error_and_exit(msg: str, condition=True):
+    """Prints an error and exits if the given condition is true"""
+    if condition:
+        print(f"ERROR: {msg}", file=sys.stderr)
+        sys.exit(1)
+
+
+def check_arg_errors(config, args):
+    """Checks for errors in the arguments passed by the user"""
+    error_and_exit(f"No config for the abbreviation: {args['abbrev']}",
+                   args["abbrev"] not in config.abbreviations)
+    error_and_exit(f"No config for filetype/language: {args['language']}",
+                   args["language"] not in config.templates)
+
+
+def create_filepaths(config, args) -> (Path, Path):
+    """Creates paths for the code and input file for the solutions"""
+    check_arg_errors(config, args)
+    filename = args["problem"].lower().replace(' ', '-')
+
+    directory = Path(config.abbreviations[args["abbrev"]]["dir"]) / "solving"
+    error_and_exit(f"{directory} does not exist", not directory.exists())
+
+    code_file = directory / f"{filename}.{args['language']}"
+    input_file = directory / f"{filename}.txt"
+
+    return (code_file, input_file)
 
 
 #
@@ -65,9 +88,8 @@ def error_and_exit(msg: str):
 
 def check_conf_exists():
     """Checks if a conf file already exists in the current directory."""
-    conf_file = Path(".") / "cpsm_config.py"
-    if conf_file.exists():
-        error_and_exit("Configuration file already exists!")
+    conf_file = Path("cpsm_config.py")
+    error_and_exit("Configuration file already exists!", conf_file.exists())
 
 
 def read_yes_no(msg: str) -> bool:
@@ -135,7 +157,7 @@ def init(args):
     check_conf_exists()
     options = get_init_options()
 
-    with (Path(".") / "cpsm_config.py").open("w") as conf_file:
+    with Path("cpsm_config.py").open("w") as conf_file:
         conf_file.write(template.render(options))
 
     print("Success! CPSM has been configured in this directory. To change "
@@ -157,41 +179,15 @@ def retrieve_config() -> "module":
         module_spec.loader.exec_module(configs)
         return configs
     except FileNotFoundError:
-        error_and_exit("ERROR: you need a cpsm_config.py file!")
-
-
-def check_start_cmdline_errors(config, args):
-    """Checks for errors in the arguments passed by the user for start mode"""
-    if args["abbrev"] not in config.abbreviations:
-        error_and_exit(
-            f"ERROR: No config for the abbreviation: {args['abbrev']}")
-    if args["language"] not in config.templates:
-        error_and_exit(
-            f"ERROR: No config for filetype/language: {args['language']}")
-
-
-def create_files(config, args) -> (Path, Path):
-    """Creates a code and input file for the solutions"""
-    filename = args["problem"].lower().replace(' ', '-')
-
-    directory = Path(".") / config.abbreviations[
-        args["abbrev"]]["dir"] / "solving"
-    if not directory.exists():
-        error_and_exit(f"ERROR: {directory} does not exist")
-
-    code_file = directory / f"{filename}.{args['language']}"
-    input_file = directory / f"{filename}.txt"
-    if code_file.exists() or input_file.exists():
-        error_and_exit(f"Error: Files already exist!")
-
-    return (code_file, input_file)
+        error_and_exit("You need a cpsm_config.py file!")
 
 
 def start(args):
     """Starts a solution file and input"""
     config = retrieve_config()
-    check_start_cmdline_errors(config, args)
-    code_file, input_file = create_files(config, args)
+    code_file, input_file = create_filepaths(config, args)
+    error_and_exit(f"Files already exist!",
+                   code_file.exists() or input_file.exists())
     problem_name = args["problem"].lower().replace(' ', '-')
 
     config.mappings["name"] = config.abbreviations[args["abbrev"]]["name"]
@@ -218,7 +214,16 @@ def start(args):
 
 def save(args):
     """Saves a solution file"""
-    pass
+    config = retrieve_config()
+    code_file, input_file = create_filepaths(config, args)
+    error_and_exit(f"Files do not exist!", not code_file.exists() or
+                   not input_file.exists())
+    new_code_file = code_file.parent.parent / code_file.name
+    new_input_file = input_file.parent.parent / input_file.name
+    code_file.rename(new_code_file)
+    input_file.rename(new_input_file)
+
+    print(f"Saved to {new_code_file} and {new_input_file}")
 
 
 #
