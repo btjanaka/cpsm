@@ -35,12 +35,20 @@ mappings = {
 
 {# Use raw here to allow templates to be easily written -#}
 {% raw -%}
-# Mapping of languages to templates. Substitution is done using Jinja's
-# Template.render(), with the mappings shown above. Refer to the Jinja docs
-# at http://jinja.pocoo.org/docs/2.10/ for more info.
+# Mapping of template names. Each template should be of the following form:
+#   "(template name)": {
+#       "filetype": "(file extension to use with this template)",
+#       "code": "(code for the template)",
+#   },
+# Substitution in the code is done using Jinja's Template.render(), with the
+# mappings above. In short, you can represent variables from the mappings above
+# by putting them in double curly braces, e.g. {{ variable }}. Refer to the
+# Jinja docs at http://jinja.pocoo.org/docs/2.10/ for more info.
 templates = {
-    "cpp":
-    """\
+    "cpp": {
+        "filetype": "cpp",
+        "code":
+        """\
 // Author: {{username}} ({{fullname}})
 // Problem: ({{name}}) {{problem_name}}
 #include <bits/stdc++.h>
@@ -55,8 +63,19 @@ int main() {
   return 0;
 }
 """,
-    "py":
-    """\
+    },
+    "cpp-blank": {
+        "filetype": "cpp",
+        "code":
+        """\
+// Author: {{username}} ({{fullname}})
+// Problem: ({{name}}) {{problem_name}}
+""",
+    },
+    "py": {
+        "filetype": "py",
+        "code":
+        """\
 # Author: {{username}} ({{fullname}})
 # Problem: ({{name}}) {{problem_name}}
 
@@ -64,5 +83,14 @@ import sys
 from collections import defaultdict
 
 """,
+    },
+    "py-blank": {
+        "filetype": "py",
+        "code":
+        """\
+# Author: {{username}} ({{fullname}})
+# Problem: ({{name}}) {{problem_name}}
+""",
+    },
 }
 {%- endraw %}

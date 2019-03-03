@@ -23,11 +23,11 @@ MODES = OrderedDict([
         "help": "Initialize a directory for CPSM",
     }),
     ("n", {
-        "args": ["abbrev", "problem", "language"],
+        "args": ["abbrev", "problem", "template"],
         "help": "Create a new solution (or open existing)",
     }),
     ("s", {
-        "args": ["abbrev", "problem", "language"],
+        "args": ["abbrev", "problem", "filetype"],
         "help": "Save an existing solution",
     }),
     ("h", {
@@ -95,28 +95,6 @@ def error_and_exit(msg: str, condition=True):
         sys.exit(1)
 
 
-def check_arg_errors(config, args):
-    """Checks for errors in the arguments passed by the user"""
-    error_and_exit(f"No config for the abbreviation: {args['abbrev']}",
-                   args["abbrev"] not in config.abbreviations)
-    error_and_exit(f"No config for filetype/language: {args['language']}",
-                   args["language"] not in config.templates)
-
-
-def create_filepaths(config, args) -> (Path, Path):
-    """Creates paths for the code and input file for the solutions"""
-    check_arg_errors(config, args)
-    filename = args["problem"].lower().replace(' ', '-')
-
-    directory = Path(config.abbreviations[args["abbrev"]]["dir"]) / "solving"
-    error_and_exit(f"{directory} does not exist", not directory.exists())
-
-    code_file = directory / f"{filename}.{args['language']}"
-    input_file = directory / f"{filename}.txt"
-
-    return (code_file, input_file)
-
-
 #
 # Initialization mode
 #
@@ -128,14 +106,18 @@ def check_conf_exists():
     error_and_exit("Configuration file already exists!", conf_file.exists())
 
 
-def read_yes_no(msg: str) -> bool:
+def read_yes_no(msg: str, default=True) -> bool:
     """
     Reads in a yes/no response from the user and returns a bool indicating
-    the response. The msg will be displayed as |$msg [Yes/no]: |
+    the response. The msg will be displayed as |$msg [Yes/no]: |. |default| is
+    the default between yes/no.
     """
     while True:
-        response = input(f"{msg} [Yes/no]: ").strip().lower()
-        if response in ("", "yes", "y"):
+        response = input(
+            f"{msg} {'[Yes/no]' if default else '[yes/No]'}: ").strip().lower()
+        if response == "":
+            return default
+        elif response in ("yes", "y"):
             return True
         elif response in ("no", "n"):
             return False
@@ -218,10 +200,28 @@ def retrieve_config() -> "module":
         error_and_exit("You need a cpsm_config.py file!")
 
 
+def create_filepaths(config, args, code_filetype) -> (Path, Path):
+    """Creates paths for the code and input file for the solutions"""
+    filename = args["problem"].lower().replace(' ', '-')
+
+    error_and_exit(f"No config for the abbreviation: {args['abbrev']}",
+                   args["abbrev"] not in config.abbreviations)
+    directory = Path(config.abbreviations[args["abbrev"]]["dir"]) / "solving"
+    error_and_exit(f"{directory} does not exist", not directory.exists())
+
+    code_file = directory / f"{filename}.{code_filetype}"
+    input_file = directory / f"{filename}.txt"
+
+    return (code_file, input_file)
+
+
 def start(args):
     """Starts a solution file and input"""
     config = retrieve_config()
-    code_file, input_file = create_filepaths(config, args)
+    error_and_exit(f"No config for template: {args['template']}",
+                   args["template"] not in config.templates)
+    code_file, input_file = create_filepaths(
+        config, args, config.templates[args["template"]]["filetype"])
     problem_name = args["problem"].lower().replace(' ', '-')
 
     config.mappings["name"] = config.abbreviations[args["abbrev"]]["name"]
@@ -230,7 +230,8 @@ def start(args):
     # Create the appropriate files (if necessary)
     if not code_file.exists():
         with code_file.open("w") as cfile:
-            template = jinja2.Template(config.templates[args["language"]])
+            template = jinja2.Template(
+                config.templates[args["template"]]["code"])
             cfile.write(template.render(config.mappings))
     if not input_file.exists():
         with input_file.open("w") as ifile:
@@ -255,9 +256,8 @@ def save_with_check(file: Path):
     """
     error_and_exit(f"{file} does not exist!", not file.exists())
     new_file = file.parent.parent / file.name
-    if not new_file.exists() or (
-            new_file.exists() and
-            read_yes_no(f"{new_file} already exists. Overwrite?")):
+    if not new_file.exists() or (new_file.exists() and read_yes_no(
+            f"{new_file} already exists. Overwrite?", False)):
         file.rename(new_file)
         print(f"Saved {file} to {new_file}")
     else:
@@ -267,7 +267,7 @@ def save_with_check(file: Path):
 def save(args):
     """Saves a solution file"""
     config = retrieve_config()
-    code_file, input_file = create_filepaths(config, args)
+    code_file, input_file = create_filepaths(config, args, args["filetype"])
     save_with_check(code_file)
     save_with_check(input_file)
 
