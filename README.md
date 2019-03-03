@@ -71,7 +71,7 @@ by cpsm.
 ```
 USAGE: cpsm MODE [ARGS...]
   cpsm init | Initialize a directory for CPSM
-  cpsm n abbrev problem language | Create a new solution
+  cpsm n abbrev problem language | Create a new solution (or open existing)
   cpsm s abbrev problem language | Save an existing solution
   cpsm h | Display the full help message
 ```
@@ -88,6 +88,7 @@ cpsm n hr "Journey to the Moon" cpp
 
 This creates a journey-to-the-moon.cpp and journey-to-the-moon.txt file in the
 hackerrank/solving file and opens up an editor where you can work on the files.
+_Note that if any of these files exist already, they will simply be opened._
 Once you are done, you can move the files to the main hackerrank directory (i.e.
 "save" it) with the following command.
 
@@ -114,10 +115,7 @@ with CPSM.
 CPSM is under (heavy) development. Here are some remaining tasks, in order of
 priority:
 
-1. Make save mode not require a language spec
-1. Avoid having errors in create mode just because an input file already exists
 1. Add documentation on config files to README
-1. Add more examples to README
 1. Add a demo gif to README
 1. Add NPM and use packages from it to automate linting, formatting, etc. for
    the repo.

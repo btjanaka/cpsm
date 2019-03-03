@@ -22,7 +22,7 @@ MODES = {
     },
     "n": {
         "args": ["abbrev", "problem", "language"],
-        "help": "Create a new solution",
+        "help": "Create a new solution (or open existing)",
     },
     "s": {
         "args": ["abbrev", "problem", "language"],
@@ -223,19 +223,19 @@ def start(args):
     """Starts a solution file and input"""
     config = retrieve_config()
     code_file, input_file = create_filepaths(config, args)
-    error_and_exit(f"Files already exist!",
-                   code_file.exists() or input_file.exists())
     problem_name = args["problem"].lower().replace(' ', '-')
 
     config.mappings["name"] = config.abbreviations[args["abbrev"]]["name"]
     config.mappings["problem_name"] = problem_name
 
-    # Create the appropriate files
-    with code_file.open("w") as cfile:
-        template = jinja2.Template(config.templates[args["language"]])
-        cfile.write(template.render(config.mappings))
-    with input_file.open("w") as ifile:
-        pass  # Empty file
+    # Create the appropriate files (if necessary)
+    if not code_file.exists():
+        with code_file.open("w") as cfile:
+            template = jinja2.Template(config.templates[args["language"]])
+            cfile.write(template.render(config.mappings))
+    if not input_file.exists():
+        with input_file.open("w") as ifile:
+            pass  # Empty file
 
     # Launch editor
     if config.open_input:
