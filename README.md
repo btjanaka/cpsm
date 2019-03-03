@@ -90,7 +90,8 @@ This creates a journey-to-the-moon.cpp and journey-to-the-moon.txt file in the
 hackerrank/solving file and opens up an editor where you can work on the files.
 _Note that if any of these files exist already, they will simply be opened._
 Once you are done, you can move the files to the main hackerrank directory (i.e.
-"save" it) with the following command.
+"save" it) with the following command. A prompt will be provided if these files
+already exist in the directory.
 
 ```
 cpsm s hr "Journey to the Moon" cpp

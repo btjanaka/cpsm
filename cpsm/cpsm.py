@@ -249,18 +249,28 @@ def start(args):
 #
 
 
+def save_with_check(file: Path):
+    """
+    Saves the file by moving it to the main directory, but also checks if it
+    already exists and provides a prompt to the user if so.
+    """
+    error_and_exit(f"{file} does not exist!", not file.exists())
+    new_file = file.parent.parent / file.name
+    if not new_file.exists() or (
+            new_file.exists() and
+            read_yes_no(f"{new_file} already exists. Overwrite?")):
+        file.rename(new_file)
+        print(f"Saved {file} to {new_file}")
+    else:
+        print(f"Ok. Leaving {file} as is.")
+
+
 def save(args):
     """Saves a solution file"""
     config = retrieve_config()
     code_file, input_file = create_filepaths(config, args)
-    error_and_exit(f"Files do not exist!", not code_file.exists() or
-                   not input_file.exists())
-    new_code_file = code_file.parent.parent / code_file.name
-    new_input_file = input_file.parent.parent / input_file.name
-    code_file.rename(new_code_file)
-    input_file.rename(new_input_file)
-
-    print(f"Saved to {new_code_file} and {new_input_file}")
+    save_with_check(code_file)
+    save_with_check(input_file)
 
 
 #
