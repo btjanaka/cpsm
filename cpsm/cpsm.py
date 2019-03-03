@@ -6,6 +6,7 @@ import json
 import os
 import sys
 from pathlib import Path
+from collections import OrderedDict
 
 #
 # Command line
@@ -15,24 +16,25 @@ from pathlib import Path
 # - "args": list of arguments that the mode takes, in the order they must appear
 #   on the command line
 # - "help": help message for that mode
-MODES = {
-    "init": {
+# OrderedDict used to enforce ordering when printing usage messages.
+MODES = OrderedDict([
+    ("init", {
         "args": [],
         "help": "Initialize a directory for CPSM",
-    },
-    "n": {
+    }),
+    ("n", {
         "args": ["abbrev", "problem", "language"],
         "help": "Create a new solution (or open existing)",
-    },
-    "s": {
+    }),
+    ("s", {
         "args": ["abbrev", "problem", "language"],
         "help": "Save an existing solution",
-    },
-    "h": {
+    }),
+    ("h", {
         "args": [],
-        "help": "Display the full help message",
-    },
-}
+        "help": "Display this help message",
+    }),
+])
 
 
 def print_mode(mode: str):
@@ -52,11 +54,8 @@ def usage(mode=None):
     if mode is not None:
         print_mode(mode)
     else:
-        print_mode("init")
-        for m in sorted(MODES):
-            if m != "init" and m != "h":
-                print_mode(m)
-        print_mode("h")
+        for m in MODES:
+            print_mode(m)
     sys.exit(0)
 
 
