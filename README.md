@@ -5,6 +5,8 @@
 - [Installation](#installation)
 - [Usage](#usage)
   - [Examples](#examples)
+- [Customization](#customization)
+  - [cpsm_config.py](#cpsm_configpy)
 - [Uninstallation](#uninstallation)
 - [TODO](#todo)
 - [Credits](#credits)
@@ -71,27 +73,30 @@ by cpsm.
 ```
 USAGE: cpsm MODE [ARGS...]
   cpsm init | Initialize a directory for CPSM
-  cpsm n abbrev problem language | Create a new solution (or open existing)
-  cpsm s abbrev problem language | Save an existing solution
-  cpsm h | Display the full help message
+  cpsm n abbrev problem template | Create a new solution (or open existing)
+  cpsm s abbrev problem filetype | Save an existing solution
+  cpsm h | Display this help message
 ```
 
 ### Examples
 
-Create a new cpp solution for the HackerRank problem "Journey to the Moon",
-where the abbreviation for HackerRank is `hr` and the directory for it is
-hackerrank.
+Create a new solution for the HackerRank problem `Journey to the Moon` using the
+`cpp` template, where the abbreviation for HackerRank is `hr` and the directory
+for it is hackerrank. Note that the template need not be named `cpp`; it just so
+happens that the template name matches the file extension here.
 
 ```
 cpsm n hr "Journey to the Moon" cpp
 ```
 
 This creates a journey-to-the-moon.cpp and journey-to-the-moon.txt file in the
-hackerrank/solving file and opens up an editor where you can work on the files.
-_Note that if any of these files exist already, they will simply be opened._
-Once you are done, you can move the files to the main hackerrank directory (i.e.
-"save" it) with the following command. A prompt will be provided if these files
-already exist in the directory.
+hackerrank/solving directory and opens up an editor where you can work on the
+files. _Note that if any of these files exist already, they will simply be
+opened._
+
+Once you are done, you can move the files to the main hackerrank
+directory (i.e. "save" it) with the following command. A prompt will be
+provided if these files already exist in the directory.
 
 ```
 cpsm s hr "Journey to the Moon" cpp
@@ -99,6 +104,120 @@ cpsm s hr "Journey to the Moon" cpp
 
 Note that you do not need quotes around your problem title if your problem title
 has no spaces. For example, you can do `cpsm n uva 12345 cpp`.
+
+## Customization
+
+### cpsm_config.py
+
+Configurations for CPSM are handled in a `cpsm_config.py` file, which is created
+upon running `cpsm init`. An example is shown below.
+
+You can change the `cpsm_config.py` file at any time, as long as you maintain at
+least the original variables, since they are used in CPSM. Here are some common
+ways you might modify the file:
+
+- **Adding a template** - You can do this by adding an entry into the
+  `templates` variable. You will need to provide the name of the template, the
+  `filetype` that it is for, and the `code` used for it.
+  - The `code` is a [Jinja](http://jinja.pocoo.org/docs/2.10/) template. You can
+    add "template variables" into it by putting them in double curly braces,
+    e.g. `{{ variable }}`. Then, you can define these variables in the
+    `mappings` variable.
+- **Adding an abbreviation** - Modify the `abbreviations` variable, providing
+  the `name` and `dir` along with the new abbreviation.
+
+```python
+# Configuration file for CPSM
+
+# Command to run for opening the files when starting a new solution
+editor = "vim -p"
+
+# Should CPSM open the input file along with the code file? This is particularly
+# useful if your editor does not support files
+open_input = True
+
+# Abbreviations for directories and full names of websites/competitions/etc.
+# Abbreviations should be of the following form:
+#   "(abbrev)": {
+#       "name": "(full name of website/competition/etc)",
+#       "dir": "(name of directory)",
+#   },
+abbreviations = {
+"hr": {
+        "name": "HackerRank",
+        "dir": "hackerrank",
+    },
+}
+
+# Mapping of strings that can be inserted into the templates below. Note that
+# the following keys are reserved for use by CPSM:
+#   "name" - the name of the website/competition/etc for the problem
+#   "problem_name" - the title of the problem
+# If you include these keys, they simply will not be used.
+mappings = {
+    "username": "anonymous",
+    "fullname": "Anonymous Sample",
+}
+
+# Mapping of template names. Each template should be of the following form:
+#   "(template name)": {
+#       "filetype": "(file extension to use with this template)",
+#       "code": "(code for the template)",
+#   },
+# Substitution in the code is done using Jinja's Template.render(), with the
+# mappings above. In short, you can represent variables from the mappings above
+# by putting them in double curly braces, e.g. {{ variable }}. Refer to the
+# Jinja docs at http://jinja.pocoo.org/docs/2.10/ for more info.
+templates = {
+    "cpp": {
+        "filetype": "cpp",
+        "code":
+        """\
+// Author: {{username}} ({{fullname}})
+// Problem: ({{name}}) {{problem_name}}
+#include <bits/stdc++.h>
+#define GET(x) scanf("%d", &x)
+#define GED(x) scanf("%lf", &x)
+typedef long long ll;
+using namespace std;
+typedef pair<int, int> ii;
+
+int main() {
+
+  return 0;
+}
+""",
+    },
+    "cpp-blank": {
+        "filetype": "cpp",
+        "code":
+        """\
+// Author: {{username}} ({{fullname}})
+// Problem: ({{name}}) {{problem_name}}
+""",
+    },
+    "py": {
+        "filetype": "py",
+        "code":
+        """\
+# Author: {{username}} ({{fullname}})
+# Problem: ({{name}}) {{problem_name}}
+
+import sys
+from collections import defaultdict
+
+""",
+    },
+    "py-blank": {
+        "filetype": "py",
+        "code":
+        """\
+# Author: {{username}} ({{fullname}})
+# Problem: ({{name}}) {{problem_name}}
+""",
+    },
+}
+```
 
 ## Uninstallation
 
@@ -116,7 +235,6 @@ with CPSM.
 CPSM is under (heavy) development. Here are some remaining tasks, in order of
 priority:
 
-1. Add documentation on config files to README
 1. Add a demo gif to README
 1. Add NPM and use packages from it to automate linting, formatting, etc. for
    the repo.
