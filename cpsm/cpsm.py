@@ -11,39 +11,76 @@ from pathlib import Path
 # Command line
 #
 
-USAGE = """\
-USAGE: cpsm <mode> [args...]
- cpsm init  |  Initialize a directory
- cpsm n abbrev problem language  |  Create a new solution
- cpsm s abbrev problem language  |  Save an existing solution
- cpsm h  |  Display this help message
-"""
+# Mapping of mode names to:
+# - "args": list of arguments that the mode takes, in the order they must appear
+#   on the command line
+# - "help": help message for that mode
+MODES = {
+    "init": {
+        "args": [],
+        "help": "Initialize a directory for CPSM",
+    },
+    "n": {
+        "args": ["abbrev", "problem", "language"],
+        "help": "Create a new solution",
+    },
+    "s": {
+        "args": ["abbrev", "problem", "language"],
+        "help": "Save an existing solution",
+    },
+    "h": {
+        "args": [],
+        "help": "Display the full help message",
+    },
+}
 
 
-def usage():
-    print(USAGE, end='')
-    sys.exit(1)
+def print_mode(mode: str):
+    if mode in MODES:
+        print(f"  cpsm {mode} {' '.join(MODES[mode]['args'])}"
+              f"{'' if len(MODES[mode]['args']) == 0 else ' '}"
+              f"| {MODES[mode]['help']}")
+    else:
+        print("Invalid mode!")
+
+
+def usage(mode=None):
+    """
+    Prints usage message for given mode (all modes if mode is None) and exits.
+    """
+    print("USAGE: cpsm MODE [ARGS...]")
+    if mode is not None:
+        print_mode(mode)
+    else:
+        print_mode("init")
+        for m in sorted(MODES):
+            if m != "init" and m != "h":
+                print_mode(m)
+        print_mode("h")
+    sys.exit(0)
 
 
 def parse_commandline_flags() -> {str: "argument value"}:
-    args = {"init": False, "n": False, "s": False}
+    """
+    Parses all flags from the command line and returns the args. args will only
+    contain the values of the arguments for the given mode; this mode is stored
+    in args["mode"]
+    """
+    if len(sys.argv) == 1: usage()
 
-    if len(sys.argv) == 1:
-        usage()
-    elif sys.argv[1] == "h":
-        usage()
-    elif sys.argv[1] == "init":
-        if len(sys.argv) != 2: usage()
-        args["init"] = True
-    elif sys.argv[1] == "n" or sys.argv[1] == "s":
-        if len(sys.argv) != 5: usage()
-        args[sys.argv[1]] = True
-        args["abbrev"] = sys.argv[2]
-        args["problem"] = sys.argv[3]
-        args["language"] = sys.argv[4]
-    else:
-        usage()
+    # Retrieve mode
+    mode = sys.argv[1]
+    if mode not in MODES or mode == "h": usage()
 
+    # Check for correct number of arguments - 2 are for "cpsm MODE"
+    if len(sys.argv) != 2 + len(MODES[mode]["args"]): usage(mode)
+
+    # Fill up arguments
+    args = {}
+    for i in range(len(MODES[mode]["args"])):
+        args[MODES[mode]["args"][i]] = sys.argv[i + 2]
+
+    args["mode"] = mode
     return args
 
 
@@ -55,7 +92,7 @@ def parse_commandline_flags() -> {str: "argument value"}:
 def error_and_exit(msg: str, condition=True):
     """Prints an error and exits if the given condition is true"""
     if condition:
-        print(f"ERROR: {msg}", file=sys.stderr)
+        print(f"ERROR: {msg}")
         sys.exit(1)
 
 
@@ -233,12 +270,8 @@ def save(args):
 
 def main():
     args = parse_commandline_flags()
-    if args["init"]:
-        init(args)
-    elif args["s"]:
-        save(args)
-    else:
-        start(args)
+    run = {"init": init, "n": start, "s": save}
+    run[args["mode"]](args)
 
 
 if __name__ == "__main__":

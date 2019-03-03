@@ -69,11 +69,11 @@ by cpsm.
 ## Usage
 
 ```
-USAGE: cpsm <mode> [args...]
- cpsm init  |  Initialize a directory
- cpsm n abbrev problem language  |  Create a new solution
- cpsm s abbrev problem language  |  Save an existing solution
- cpsm h  |  Display this help message
+USAGE: cpsm MODE [ARGS...]
+  cpsm init | Initialize a directory for CPSM
+  cpsm n abbrev problem language | Create a new solution
+  cpsm s abbrev problem language | Save an existing solution
+  cpsm h | Display the full help message
 ```
 
 ### Examples
@@ -122,7 +122,6 @@ priority:
 1. Add NPM and use packages from it to automate linting, formatting, etc. for
    the repo.
 1. Add a CONTRIBUTING.md
-1. Refactor command line argument parsing to make it easier to add modes
 1. Add checks for the current directories in init mode (may be undesirable)
 1. Check for existing input files in the main directory before creating a new
    one (and query the user to see if they would like to use that file).
