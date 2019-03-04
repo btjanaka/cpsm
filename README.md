@@ -1,5 +1,11 @@
 # CPSM - Competitive Programming Solutions Manager
 
+<p align="center">
+<img src="docs/demo.gif" alt="cpsm demo">
+</p>
+
+## Overview
+
 <!-- toc -->
 
 - [Installation](#installation)
@@ -235,7 +241,6 @@ with CPSM.
 CPSM is under (heavy) development. Here are some remaining tasks, in order of
 priority:
 
-1. Add a demo gif to README
 1. Add NPM and use packages from it to automate linting, formatting, etc. for
    the repo.
 1. Add a CONTRIBUTING.md
