@@ -241,18 +241,15 @@ with CPSM.
 CPSM is under (heavy) development. Here are some remaining tasks, in order of
 priority:
 
-1. Add NPM and use packages from it to automate linting, formatting, etc. for
-   the repo.
 1. Add a CONTRIBUTING.md
+1. Add support for Git in save mode (and init)
+1. Add a run mode to allow one to easily see output for a program and input
 1. Add checks for the current directories in init mode (may be undesirable)
 1. Check for existing input files in the main directory before creating a new
    one (and query the user to see if they would like to use that file).
-1. Add a run mode to allow one to easily see output for a program and input
 1. Enable compatibility with earlier Python (down to 3.4-3.5?), mainly by
    eliminating f-strings
 1. Create a PyPI package
-1. Allow naming templates after something other than filetypes, to allow
-   multiple templates for a given filetype
 1. Make a website on Github Pages - or a readthedocs page
 1. Integrate testing? [shUnit](https://github.com/kward/shunit2)
 

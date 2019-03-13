@@ -113,8 +113,8 @@ def read_yes_no(msg: str, default=True) -> bool:
     the default between yes/no.
     """
     while True:
-        response = input(
-            f"{msg} {'[Yes/no]' if default else '[yes/No]'}: ").strip().lower()
+        response = input(f"{msg} {'[Yes/no]' if default else '[yes/No]'}: "
+                         ).strip().lower()
         if response == "":
             return default
         elif response in ("yes", "y"):
