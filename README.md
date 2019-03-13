@@ -14,6 +14,7 @@
 - [Customization](#customization)
   - [cpsm_config.py](#cpsm_configpy)
 - [Uninstallation](#uninstallation)
+- [Contributing](#contributing)
 - [TODO](#todo)
 - [Credits](#credits)
 
@@ -236,12 +237,15 @@ pip uninstall cpsm
 You may also want to remove your `cpsm_config.py` files if you are truly done
 with CPSM.
 
+## Contributing
+
+See CONTRIBUTING.md.
+
 ## TODO
 
 CPSM is under (heavy) development. Here are some remaining tasks, in order of
 priority:
 
-1. Add a CONTRIBUTING.md
 1. Add support for Git in save mode (and init)
 1. Add a run mode to allow one to easily see output for a program and input
 1. Add checks for the current directories in init mode (may be undesirable)
