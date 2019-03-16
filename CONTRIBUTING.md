@@ -9,6 +9,7 @@ Thank you for your interest in contributing to CPSM!
 - [Making Changes](#making-changes)
   - [Example Workflows](#example-workflows)
     - [Adding a Config Variable to cpsm_config.py](#adding-a-config-variable-to-cpsm_configpy)
+    - [Adding a new Mode](#adding-a-new-mode)
 - [Resources](#resources)
 
 <!-- tocstop -->
@@ -75,8 +76,21 @@ Thank you for your interest in contributing to CPSM!
 1. Add the variable to `get_init_options` in `cpsm.py`
 1. Add logic, in a mode such as `save` or `start`, that makes use of the config
    variable.
-1. Add the variable to the example in README, and add info about it elsewhere if
-   applicable.
+1. Add the variable to the `cpsm_config.py` example under `Customization` in
+   README, and add info about it elsewhere if applicable.
+
+#### Adding a new Mode
+
+1. Decide what command line arguments are needed for the mode.
+1. Add the mode, its command line arguments, and help message to `MODES` in
+   `cpsm.py`
+1. Document the mode in README, particularly under the `Examples` section.
+1. Decide what config variables (if any) are needed for the mode, and add them
+   using the instructions [above](#adding-a-config-variable-to-cpsm_configpy)
+1. Add a function to `cpsm.py` that takes in `args` and then figures out what to
+   do for the new mode.
+1. Add the mode name and the function to the `mode_functions` dictionary in
+   `main` in `cpsm.py`.
 
 ## Resources
 
