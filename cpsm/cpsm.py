@@ -165,6 +165,18 @@ def get_init_options() -> dict:
             "What is the directory for this abbreviation?", "dir")
         options["abbrevs"].append(cur_abbrev)
 
+    print()
+    options["git_init"] = read_yes_no(
+        "Should this directory be initialized as a git repo?")
+    if options["git_init"]:
+        options["save_code_to_git"] = read_yes_no(
+            "Should code files be added and committed to the git repo?")
+        options["save_input_to_git"] = read_yes_no(
+            "Should input files be added and committed to the git repo?")
+    else:
+        options["save_code_to_git"] = False
+        options["save_input_to_git"] = False
+
     return options
 
 
@@ -177,6 +189,8 @@ def init(args):
 
     with Path("cpsm_config.py").open("w") as conf_file:
         conf_file.write(template.render(options))
+
+    if options["git_init"]: os.system("git init")
 
     print("Success! CPSM has been configured in this directory. To change "
           "configurations, particularly your templates, edit the "
@@ -249,7 +263,7 @@ def start(args):
 #
 
 
-def save_with_check(file: Path):
+def save_with_check(file: Path, save_to_git: bool):
     """
     Saves the file by moving it to the main directory, but also checks if it
     already exists and provides a prompt to the user if so.
@@ -259,6 +273,9 @@ def save_with_check(file: Path):
     if not new_file.exists() or (new_file.exists() and read_yes_no(
             f"{new_file} already exists. Overwrite?", False)):
         file.rename(new_file)
+        if save_to_git:
+            os.system(f"git add {new_file}")
+            os.system(f"git commit -m \"Add {new_file}\"")
         print(f"Saved {file} to {new_file}")
     else:
         print(f"Ok. Leaving {file} as is.")
@@ -268,8 +285,8 @@ def save(args):
     """Saves a solution file"""
     config = retrieve_config()
     code_file, input_file = create_filepaths(config, args, args["filetype"])
-    save_with_check(code_file)
-    save_with_check(input_file)
+    save_with_check(code_file, config.save_code_to_git)
+    save_with_check(input_file, config.save_input_to_git)
 
 
 #

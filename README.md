@@ -101,8 +101,9 @@ hackerrank/solving directory and opens up an editor where you can work on the
 files. _Note that if any of these files exist already, they will simply be
 opened._
 
-Once you are done, you can move the files to the main hackerrank
-directory (i.e. "save" it) with the following command. A prompt will be
+Once you are done, you can move the files to the main hackerrank directory (i.e.
+"save" it) with the following command. If your configuration file allows it, the
+files will also be added and committed to the git repo. A prompt will be
 provided if these files already exist in the directory.
 
 ```
@@ -142,6 +143,11 @@ editor = "vim -p"
 # Should CPSM open the input file along with the code file? This is particularly
 # useful if your editor does not support files
 open_input = True
+
+# When saving, should CPSM add and commit the files to git? You can choose to
+# do this for one, both, or none of the code and input files
+save_code_to_git = {{ save_code_to_git }}
+save_input_to_git = {{ save_input_to_git }}
 
 # Abbreviations for directories and full names of websites/competitions/etc.
 # Abbreviations should be of the following form:
@@ -246,14 +252,13 @@ See CONTRIBUTING.md.
 CPSM is under (heavy) development. Here are some remaining tasks, in order of
 priority:
 
-1. Add support for Git in save mode (and init)
 1. Add a run mode to allow one to easily see output for a program and input
 1. Add checks for the current directories in init mode (may be undesirable)
 1. Check for existing input files in the main directory before creating a new
    one (and query the user to see if they would like to use that file).
+1. Create a PyPI package
 1. Enable compatibility with earlier Python (down to 3.4-3.5?), mainly by
    eliminating f-strings
-1. Create a PyPI package
 1. Make a website on Github Pages - or a readthedocs page
 1. Integrate testing? [shUnit](https://github.com/kward/shunit2)
 
