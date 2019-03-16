@@ -7,6 +7,8 @@ Thank you for your interest in contributing to CPSM!
 - [Getting Started](#getting-started)
 - [Project Organization](#project-organization)
 - [Making Changes](#making-changes)
+  - [Example Workflows](#example-workflows)
+    - [Adding a Config Variable to cpsm_config.py](#adding-a-config-variable-to-cpsm_configpy)
 - [Resources](#resources)
 
 <!-- tocstop -->
@@ -64,6 +66,17 @@ Thank you for your interest in contributing to CPSM!
    automatically.
 1. Your code will be reviewed and commented on, and (hopefully) eventually
    merged!
+
+### Example Workflows
+
+#### Adding a Config Variable to cpsm_config.py
+
+1. Add the variable to `cpsm/templates/cpsm_config_template.j2`
+1. Add the variable to `get_init_options` in `cpsm.py`
+1. Add logic, in a mode such as `save` or `start`, that makes use of the config
+   variable.
+1. Add the variable to the example in README, and add info about it elsewhere if
+   applicable.
 
 ## Resources
 
