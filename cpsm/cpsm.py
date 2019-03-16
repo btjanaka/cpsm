@@ -95,6 +95,43 @@ def error_and_exit(msg: str, condition=True):
         sys.exit(1)
 
 
+def problem_to_filename(problem_name: str):
+    """Converts a problem name to a filename"""
+    return problem_name.lower().replace(' ', '-')
+
+
+def create_filepaths(config: "module", abbrev: str, problem_name: str,
+                     code_filetype: str) -> (Path, Path):
+    """
+    Creates paths for the code and input file for the solutions. Prints an
+    error and exits if the abbreviation is not in the config, or if the
+    directory for the given abbreviation does not exist.
+    """
+    filename = problem_to_filename(problem_name)
+
+    error_and_exit(f"No config for the abbreviation: {abbrev}",
+                   abbrev not in config.abbreviations)
+    directory = Path(config.abbreviations[abbrev]["dir"]) / "solving"
+    error_and_exit(f"{directory} does not exist", not directory.exists())
+
+    code_file = directory / f"{filename}.{code_filetype}"
+    input_file = directory / f"{filename}.txt"
+
+    return (code_file, input_file)
+
+
+def retrieve_config() -> "module":
+    """Retrieves configuration info"""
+    try:
+        module_spec = importlib.util.spec_from_file_location(
+            "cpsm_config", "cpsm_config.py")
+        configs = importlib.util.module_from_spec(module_spec)
+        module_spec.loader.exec_module(configs)
+        return configs
+    except FileNotFoundError:
+        error_and_exit("You need a cpsm_config.py file!")
+
+
 #
 # Initialization mode
 #
@@ -202,40 +239,14 @@ def init(args):
 #
 
 
-def retrieve_config() -> "module":
-    """Retrieves configuration info"""
-    try:
-        module_spec = importlib.util.spec_from_file_location(
-            "cpsm_config", "cpsm_config.py")
-        configs = importlib.util.module_from_spec(module_spec)
-        module_spec.loader.exec_module(configs)
-        return configs
-    except FileNotFoundError:
-        error_and_exit("You need a cpsm_config.py file!")
-
-
-def create_filepaths(config, args, code_filetype) -> (Path, Path):
-    """Creates paths for the code and input file for the solutions"""
-    filename = args["problem"].lower().replace(' ', '-')
-
-    error_and_exit(f"No config for the abbreviation: {args['abbrev']}",
-                   args["abbrev"] not in config.abbreviations)
-    directory = Path(config.abbreviations[args["abbrev"]]["dir"]) / "solving"
-    error_and_exit(f"{directory} does not exist", not directory.exists())
-
-    code_file = directory / f"{filename}.{code_filetype}"
-    input_file = directory / f"{filename}.txt"
-
-    return (code_file, input_file)
-
-
 def start(args):
     """Starts a solution file and input"""
     config = retrieve_config()
     error_and_exit(f"No config for template: {args['template']}",
                    args["template"] not in config.templates)
     code_file, input_file = create_filepaths(
-        config, args, config.templates[args["template"]]["filetype"])
+        config, args["abbrev"], args["problem"],
+        config.templates[args["template"]]["filetype"])
     problem_name = args["problem"].lower().replace(' ', '-')
 
     config.mappings["name"] = config.abbreviations[args["abbrev"]]["name"]
@@ -265,8 +276,9 @@ def start(args):
 
 def save_with_check(file: Path, save_to_git: bool):
     """
-    Saves the file by moving it to the main directory, but also checks if it
-    already exists and provides a prompt to the user if so.
+    Saves the file by moving it to the main directory. Checks if the file in the
+    main directory already exists and provides a prompt to the user if so. Also
+    checks if the file passed in does not exist at all.
     """
     error_and_exit(f"{file} does not exist!", not file.exists())
     new_file = file.parent.parent / file.name
@@ -284,7 +296,8 @@ def save_with_check(file: Path, save_to_git: bool):
 def save(args):
     """Saves a solution file"""
     config = retrieve_config()
-    code_file, input_file = create_filepaths(config, args, args["filetype"])
+    code_file, input_file = create_filepaths(config, args["abbrev"],
+                                             args["problem"], args["filetype"])
     save_with_check(code_file, config.save_code_to_git)
     save_with_check(input_file, config.save_input_to_git)
 
@@ -296,8 +309,8 @@ def save(args):
 
 def main():
     args = parse_commandline_flags()
-    run = {"init": init, "n": start, "s": save}
-    run[args["mode"]](args)
+    mode_functions = {"init": init, "n": start, "s": save}
+    mode_functions[args["mode"]](args)
 
 
 if __name__ == "__main__":
