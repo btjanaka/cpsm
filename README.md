@@ -283,9 +283,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 CPSM is under (heavy) development. Here are some remaining tasks, in order of
 priority:
 
-1. Update GIF with new features
-1. Check for existing input files in the main directory before creating a new
-   one (and query the user to see if they would like to use that file).
 1. Create a PyPI package
 1. Enable compatibility with earlier Python (down to 3.4-3.5?), mainly by
    eliminating f-strings
