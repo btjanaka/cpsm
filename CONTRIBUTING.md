@@ -21,7 +21,8 @@ Thank you for your interest in contributing to CPSM!
 1. On your local machine,
    [clone](https://help.github.com/articles/cloning-a-repository/) your fork of
    the repository.
-1. Once you have cloned the repo, run:
+1. Once you have cloned the repo, create a virtual environment (e.g. with
+   `virtualenv` or python's `venv` module) and run:
 
    ```
    pip install -e .
