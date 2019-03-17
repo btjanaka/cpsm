@@ -65,8 +65,8 @@ Thank you for your interest in contributing to CPSM!
    after you launch a PR from one of your fork's branches, all
    subsequent commits to that branch will be added to the open pull request
    automatically.
-1. Your code will be reviewed and commented on, and (hopefully) eventually
-   merged!
+1. Once you mark the "Ready to go" box in your Pull Request message, your code
+   will be reviewed and commented on, and (hopefully) eventually merged!
 
 ### Example Workflows
 
