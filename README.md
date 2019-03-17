@@ -274,13 +274,6 @@ with CPSM.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## TODO
-
-CPSM is under (heavy) development. Here are some remaining tasks, in order of
-priority:
-
-1. Make a website on Github Pages - or a readthedocs page
-
 ## Credits
 
 - [Kevin Wang](https://github.com/vitamintk), for encouraging me to push this to
