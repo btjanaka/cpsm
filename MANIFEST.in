@@ -1,0 +1,4 @@
+include bin/cpsm
+include README.md
+include docs/demo.gif
+include cpsm/templates/*.j2

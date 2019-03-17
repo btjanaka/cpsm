@@ -95,9 +95,9 @@ Thank you for your interest in contributing to CPSM!
 
 ## Resources
 
-Below are some useful resources related to the tools and libraries used to build
-CPSM:
+Below are some useful resources related to the creation of CPSM:
 
 - [Quick Primer on Jinja](http://zetcode.com/python/jinja/)
 - [Jinja documentation](http://jinja.pocoo.org/docs/2.10/)
 - [Python Importlib](https://www.blog.pythonlibrary.org/2016/05/27/python-201-an-intro-to-importlib/)
+- [Publishing a PyPI Package](https://realpython.com/pypi-publish-python-package/)

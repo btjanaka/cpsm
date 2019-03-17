@@ -54,15 +54,11 @@ main directory.
 ## Installation
 
 CPSM requires Python 3.6 or later (compatibility with earlier versions may be
-coming soon, however). To install, start by cloning this repo. Then, while in
-the repo, do:
+coming soon, however). To install, run:
 
 ```
-pip install -e .
+pip install cpsm
 ```
-
-Make sure you use the `-e` option! If you do not, Jinja will not be able to read
-the templates. Now, you should be able to run the command `cpsm`.
 
 In a directory where you want to create solutions, do
 
@@ -283,7 +279,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 CPSM is under (heavy) development. Here are some remaining tasks, in order of
 priority:
 
-1. Create a PyPI package
 1. Make a website on Github Pages - or a readthedocs page
 
 ## Credits
