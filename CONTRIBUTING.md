@@ -84,7 +84,8 @@ Thank you for your interest in contributing to CPSM!
 1. Decide what command line arguments are needed for the mode.
 1. Add the mode, its command line arguments, and help message to `MODES` in
    `cpsm.py`
-1. Document the mode in README, particularly under the `Examples` section.
+1. Document the mode in README, particularly under the `Examples` and `Usage`
+   section.
 1. Decide what config variables (if any) are needed for the mode, and add them
    using the instructions [above](#adding-a-config-variable-to-cpsm_configpy)
 1. Add a function to `cpsm.py` that takes in `args` and then figures out what to
