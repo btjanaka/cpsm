@@ -284,10 +284,7 @@ CPSM is under (heavy) development. Here are some remaining tasks, in order of
 priority:
 
 1. Create a PyPI package
-1. Enable compatibility with earlier Python (down to 3.4-3.5?), mainly by
-   eliminating f-strings
 1. Make a website on Github Pages - or a readthedocs page
-1. Integrate testing? [shUnit](https://github.com/kward/shunit2)
 
 ## Credits
 
