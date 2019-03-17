@@ -26,6 +26,10 @@ MODES = OrderedDict([
         "args": ["abbrev", "problem", "template"],
         "help": "Create a new solution (or open existing)",
     }),
+    ("r", {
+        "args": ["abbrev", "problem", "filetype"],
+        "help": "Run a solution",
+    }),
     ("s", {
         "args": ["abbrev", "problem", "filetype"],
         "help": "Save an existing solution",
@@ -95,9 +99,19 @@ def error_and_exit(msg: str, condition=True):
         sys.exit(1)
 
 
-def problem_to_filename(problem_name: str):
+def problem_to_filename(problem_name: str) -> str:
     """Converts a problem name to a filename"""
     return problem_name.lower().replace(' ', '-')
+
+
+def solving_dir_path(maindir: str) -> Path:
+    """
+    Create a path to the solving directory in a given directory, and exit if it
+    does not exist.
+    """
+    solvingdir = Path(maindir) / "solving"
+    error_and_exit(f"{solvingdir} does not exist", not solvingdir.exists())
+    return solvingdir
 
 
 def create_filepaths(config: "module", abbrev: str, problem_name: str,
@@ -111,9 +125,7 @@ def create_filepaths(config: "module", abbrev: str, problem_name: str,
 
     error_and_exit(f"No config for the abbreviation: {abbrev}",
                    abbrev not in config.abbreviations)
-    directory = Path(config.abbreviations[abbrev]["dir"]) / "solving"
-    error_and_exit(f"{directory} does not exist", not directory.exists())
-
+    directory = solving_dir_path(config.abbreviations[abbrev]["dir"])
     code_file = directory / f"{filename}.{code_filetype}"
     input_file = directory / f"{filename}.txt"
 
@@ -270,6 +282,23 @@ def start(args):
 
 
 #
+# Run mode
+#
+
+
+def run(args):
+    """Runs a solution file"""
+    config = retrieve_config()
+    error_and_exit(f"No config for running filetype {args['filetype']}",
+                   args["filetype"] not in config.run_commands)
+    problem_name = str(
+        solving_dir_path(config.abbreviations[args["abbrev"]]["dir"]) /
+        problem_to_filename(args["problem"]))
+    for cmd in config.run_commands[args["filetype"]]:
+        os.system(jinja2.Template(cmd).render(problem_name=problem_name))
+
+
+#
 # Save mode
 #
 
@@ -309,7 +338,7 @@ def save(args):
 
 def main():
     args = parse_commandline_flags()
-    mode_functions = {"init": init, "n": start, "s": save}
+    mode_functions = {"init": init, "n": start, "r": run, "s": save}
     mode_functions[args["mode"]](args)
 
 

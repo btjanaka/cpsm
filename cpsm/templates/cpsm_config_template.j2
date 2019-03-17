@@ -98,4 +98,22 @@ from collections import defaultdict
 """,
     },
 }
+
+# A mapping of filetypes to a list of commands that should be run during run
+# mode. Each command should be of the form:
+#   "(filetype)": {
+#       ["(command 1)", "(command 2)", ...],
+#   },
+# Each command is interpreted as a jinja template, and there is only one
+# variable, "problem_name", that is used during substitution. "problem_name"
+# consists of the filename of the problem, with directories prepended to it.
+run_commands = {
+    "cpp": [
+        "g++ {{ problem_name }}.cpp -o {{ problem_name }}.out",
+        "{{ problem_name }}.out < {{ problem_name }}.txt",
+    ],
+    "py": [
+        "python {{ problem_name }}.py < {{ problem_name }}.txt",
+    ],
+}
 {%- endraw %}

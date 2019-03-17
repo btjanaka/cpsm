@@ -81,6 +81,7 @@ by cpsm.
 USAGE: cpsm MODE [ARGS...]
   cpsm init | Initialize a directory for CPSM
   cpsm n abbrev problem template | Create a new solution (or open existing)
+  cpsm r abbrev problem filetype | Run a solution
   cpsm s abbrev problem filetype | Save an existing solution
   cpsm h | Display this help message
 ```
@@ -101,9 +102,19 @@ hackerrank/solving directory and opens up an editor where you can work on the
 files. _Note that if any of these files exist already, they will simply be
 opened._
 
+While coding, you can run your solution with the input file by doing:
+
+```
+cpsm r hr "Journey to the Moon" cpp
+```
+
+Behind the scenes, this uses `g++` to compile journey-to-the-moon.cpp to create
+a journey-to-the-moon.out file in the hackerrank/solving directory and runs it
+with journey-to-the-moon.txt as input.
+
 Once you are done, you can move the files to the main hackerrank directory (i.e.
-"save" it) with the following command. If your configuration file allows it, the
-files will also be added and committed to the git repo. A prompt will be
+"save" them) with the following command. If your configuration file allows it,
+the files will also be added and committed to the git repo. A prompt will be
 provided if these files already exist in the directory.
 
 ```
@@ -133,6 +144,8 @@ ways you might modify the file:
     `mappings` variable.
 - **Adding an abbreviation** - Modify the `abbreviations` variable, providing
   the `name` and `dir` along with the new abbreviation.
+- **Adding a new filetype for running** - Modify the `run_commands` variable,
+  providing a list of commands to run for the filetype.
 
 ```python
 # Configuration file for CPSM
@@ -230,6 +243,24 @@ from collections import defaultdict
 """,
     },
 }
+
+# A mapping of filetypes to a list of commands that should be run during run
+# mode. Each command should be of the form:
+#   "(filetype)": {
+#       ["(command 1)", "(command 2)", ...],
+#   },
+# Each command is interpreted as a jinja template, and there is only one
+# variable, "problem_name", that is used during substitution. "problem_name"
+# consists of the filename of the problem, with directories prepended to it.
+run_commands = {
+    "cpp": [
+        "g++ {{ problem_name }}.cpp -o {{ problem_name }}.out",
+        "{{ problem_name }}.out < {{ problem_name }}.txt",
+    ],
+    "py": [
+        "python {{ problem_name }}.py < {{ problem_name }}.txt",
+    ],
+}
 ```
 
 ## Uninstallation
@@ -245,15 +276,14 @@ with CPSM.
 
 ## Contributing
 
-See CONTRIBUTING.md.
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## TODO
 
 CPSM is under (heavy) development. Here are some remaining tasks, in order of
 priority:
 
-1. Add a run mode to allow one to easily see output for a program and input
-1. Add checks for the current directories in init mode (may be undesirable)
+1. Update GIF with new features
 1. Check for existing input files in the main directory before creating a new
    one (and query the user to see if they would like to use that file).
 1. Create a PyPI package
