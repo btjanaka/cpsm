@@ -14,7 +14,7 @@ setup(
     description="Competitive Programming Solutions Manager",
     long_description=readme(),
     long_description_content_type="text/markdown",
-    url="https://github.com/btjanaka/cpsm",
+    url="http://btjanaka.net/cpsm",
     install_requires=[
         "Jinja2==2.10",
     ],
