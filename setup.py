@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name="cpsm",
-    version="1.0.0",  # Matches __init__.py
+    version="1.0.1",  # Matches __init__.py
     author="Bryon Tjanaka",
     author_email="bryon.tjanaka@gmail.com",
     description="Competitive Programming Solutions Manager",
