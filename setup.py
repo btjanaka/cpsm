@@ -16,7 +16,7 @@ setup(
     long_description_content_type="text/markdown",
     url="http://btjanaka.net/cpsm",
     install_requires=[
-        "Jinja2==2.10",
+        "Jinja2>=2.10.1",
     ],
     extras_require={},
     license="MIT",
