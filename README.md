@@ -15,7 +15,6 @@
   - [cpsm_config.py](#cpsm_configpy)
 - [Uninstallation](#uninstallation)
 - [Contributing](#contributing)
-- [TODO](#todo)
 - [Credits](#credits)
 
 <!-- tocstop -->
