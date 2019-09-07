@@ -4,28 +4,35 @@ about: Create a report to help us improve
 title: "[BUG]"
 labels: bug
 assignees: btjanaka
-
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+## Expected Behavior
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+What is supposed to happen?
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+## Actual Behavior
 
-**Screenshots**
+What actually happened?
+
+## Steps to Reproduce
+
+1. [do this]
+2. [do that]
+3. [and that]
+
+## Context
+
+What OS?
+What version of CPSM?
+
+## Possible Solution
+
+How do you think we can fix this?
+
+## Screenshots
+
 If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Version [e.g. 22]
+## Additional Info
 
-**Additional context**
-Add any other context about the problem here.
+Add any other info about the problem here.
