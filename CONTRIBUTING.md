@@ -48,7 +48,7 @@ Thank you for your interest in contributing to CPSM!
 ├── bin               // executables
 ├── cpsm              // main project directory
 │   └── templates     // Jinja templates
-└── docs              // material related to documentation
+└── docs              // project website
 ```
 
 ## Making Changes
