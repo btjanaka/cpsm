@@ -69,14 +69,17 @@ def parse_commandline_flags() -> {str: "argument value"}:
     contain the values of the arguments for the given mode; this mode is stored
     in args["mode"]
     """
-    if len(sys.argv) == 1: usage()
+    if len(sys.argv) == 1:
+        usage()
 
     # Retrieve mode
     mode = sys.argv[1]
-    if mode not in MODES or mode == "h": usage()
+    if mode not in MODES or mode == "h":
+        usage()
 
     # Check for correct number of arguments - 2 are for "cpsm MODE"
-    if len(sys.argv) != 2 + len(MODES[mode]["args"]): usage(mode)
+    if len(sys.argv) != 2 + len(MODES[mode]["args"]):
+        usage(mode)
 
     # Fill up arguments
     args = {}
@@ -127,7 +130,8 @@ def create_filepaths(config: "module", abbrev: str, problem_name: str,
                    abbrev not in config.abbreviations)
     directory = solving_dir_path(config.abbreviations[abbrev]["dir"])
     code_file = directory / f"{filename}.{code_filetype}"
-    input_file = directory / f"{filename}.txt"
+    input_file = directory / f"{filename}.txt" \
+        if config.abbreviations[abbrev]["create_input_file"] else None
 
     return (code_file, input_file)
 
@@ -162,8 +166,8 @@ def read_yes_no(msg: str, default=True) -> bool:
     the default between yes/no.
     """
     while True:
-        response = input(f"{msg} {'[Yes/no]' if default else '[yes/No]'}: "
-                         ).strip().lower()
+        response = input(
+            f"{msg} {'[Yes/no]' if default else '[yes/No]'}: ").strip().lower()
         if response == "":
             return default
         elif response in ("yes", "y"):
@@ -212,6 +216,8 @@ def get_init_options() -> dict:
              "abbreviation?"), "MySite")
         cur_abbrev["dir"] = read_string(
             "What is the directory for this abbreviation?", "dir")
+        cur_abbrev["create_input_file"] = read_yes_no(
+            "Should problems in this directory have an input file?")
         options["abbrevs"].append(cur_abbrev)
 
     print()
@@ -239,7 +245,8 @@ def init(args):
     with Path("cpsm_config.py").open("w") as conf_file:
         conf_file.write(template.render(options))
 
-    if options["git_init"]: os.system("git init")
+    if options["git_init"]:
+        os.system("git init")
 
     print("Success! CPSM has been configured in this directory. To change "
           "configurations, particularly your templates, edit the "
@@ -265,17 +272,21 @@ def start(args):
     config.mappings["problem_name"] = problem_name
 
     # Create the appropriate files (if necessary)
+    create_input_file = \
+        config.abbreviations[args["abbrev"]]["create_input_file"]
     if not code_file.exists():
         with code_file.open("w") as cfile:
             template = jinja2.Template(
                 config.templates[args["template"]]["code"])
             cfile.write(template.render(config.mappings))
-    if not input_file.exists():
+    if create_input_file and not input_file.exists():
         with input_file.open("w") as ifile:
             pass  # Empty file
 
     # Launch editor
-    if config.open_input:
+    if config.open_input and create_input_file:
+        # Open both the code and input file if the user wants us to do so, and
+        # if this directory is set to use input files.
         os.system(f"{config.editor} {code_file} {input_file}")
     else:
         os.system(f"{config.editor} {code_file}")

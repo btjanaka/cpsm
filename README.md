@@ -138,7 +138,7 @@ ways you might modify the file:
     e.g. `{{ variable }}`. Then, you can define these variables in the
     `mappings` variable.
 - **Adding an abbreviation** - Modify the `abbreviations` variable, providing
-  the `name` and `dir` along with the new abbreviation.
+  the `name`, `dir`, and `create_input_file` along with the new abbreviation.
 - **Adding a new filetype for running** - Modify the `run_commands` variable,
   providing a list of commands to run for the filetype.
 
@@ -149,7 +149,7 @@ ways you might modify the file:
 editor = "vim -p"
 
 # Should CPSM open the input file along with the code file? This is particularly
-# useful if your editor does not support files
+# useful if your editor does not support opening multiple files
 open_input = True
 
 # When saving, should CPSM add and commit the files to git? You can choose to
@@ -162,11 +162,14 @@ save_input_to_git = {{ save_input_to_git }}
 #   "(abbrev)": {
 #       "name": "(full name of website/competition/etc)",
 #       "dir": "(name of directory)",
+#       # Whether or not to create input files for problems in this directory
+#       "create_input_file": True/False,
 #   },
 abbreviations = {
 "hr": {
         "name": "HackerRank",
         "dir": "hackerrank",
+        "create_input_file": True,
     },
 }
 

@@ -5,7 +5,7 @@
 editor = "{{ editor }}"
 
 # Should CPSM open the input file along with the code file? This is particularly
-# useful if your editor does not support files
+# useful if your editor does not support opening multiple files
 open_input = {{ open_input }}
 
 # When saving, should CPSM add and commit the files to git? You can choose to
@@ -18,12 +18,15 @@ save_input_to_git = {{ save_input_to_git }}
 #   "(abbrev)": {
 #       "name": "(full name of website/competition/etc)",
 #       "dir": "(name of directory)",
+#       # Whether or not to create input files for problems in this directory
+#       "create_input_file": True/False,
 #   },
 abbreviations = {
 {% for a in abbrevs -%}
     "{{ a.abbrev }}": {
         "name": "{{ a.name }}",
         "dir": "{{ a.dir }}",
+        "create_input_file": {{ a.create_input_file }},
     },
 {%- endfor %}
 }
