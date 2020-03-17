@@ -1,5 +1,11 @@
+# Python
 cpsm.egg-info
-**/__pycache__
-node_modules
+__pycache__/
 build
 dist
+
+# JS
+node_modules/
+
+# Editor
+*.swp
