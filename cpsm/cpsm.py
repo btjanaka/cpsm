@@ -334,12 +334,14 @@ def save_with_check(file: Path, save_to_git: bool):
 
 
 def save(args):
-    """Saves a solution file"""
+    """Saves a solution and it corresponding input file"""
     config = retrieve_config()
     code_file, input_file = create_filepaths(config, args["abbrev"],
                                              args["problem"], args["filetype"])
     save_with_check(code_file, config.save_code_to_git)
-    save_with_check(input_file, config.save_input_to_git)
+    # Only save the input file if this directory users input files
+    if config.abbreviations[args["abbrev"]]["create_input_file"]:
+        save_with_check(input_file, config.save_input_to_git)
 
 
 #
