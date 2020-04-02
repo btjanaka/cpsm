@@ -1,5 +1,7 @@
 # CPSM - Competitive Programming Solutions Manager
 
+This documentation is also available [here](https://btjanaka.net/projects/cpsm).
+
 <p align="center">
 <img src="docs/demo.gif" alt="cpsm demo">
 </p>
@@ -133,7 +135,7 @@ ways you might modify the file:
 - **Adding a template** - You can do this by adding an entry into the
   `templates` variable. You will need to provide the name of the template, the
   `filetype` that it is for, and the `code` used for it.
-  - The `code` is a [Jinja](http://jinja.pocoo.org/docs/2.10/) template. You can
+  - The `code` is a [Jinja](http://jinja.pocoo.org/) template. You can
     add "template variables" into it by putting them in double curly braces,
     e.g. `{{ variable }}`. Then, you can define these variables in the
     `mappings` variable.
@@ -280,5 +282,5 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 - [Kevin Wang](https://github.com/vitamintk), for encouraging me to push this to
   a full project
-- [Tianjiao Huang](https://github.com/gitletH), for being a pre-pre-pre-beta tester and suggesting the use
+- [Tianjiao Huang](https://github.com/tjhu), for being a pre-pre-pre-beta tester and suggesting the use
   of Jinja
