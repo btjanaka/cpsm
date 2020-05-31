@@ -1,6 +1,6 @@
 # CPSM - Competitive Programming Solutions Manager
 
-This documentation is also available [here](https://btjanaka.net/projects/cpsm).
+This documentation is also available [here](https://btjanaka.net/cpsm).
 
 <p align="center">
 <img src="docs/demo.gif" alt="cpsm demo">
