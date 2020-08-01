@@ -4,8 +4,5 @@ __pycache__/
 build
 dist
 
-# JS
-node_modules/
-
 # Editor
 *.swp

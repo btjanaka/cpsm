@@ -8,18 +8,18 @@ This documentation is also available [here](https://btjanaka.net/cpsm).
 
 ## Overview
 
-<!-- toc -->
+<!-- vim-markdown-toc GFM -->
 
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Examples](#examples)
-- [Customization](#customization)
-  - [cpsm_config.py](#cpsm_configpy)
-- [Uninstallation](#uninstallation)
-- [Contributing](#contributing)
-- [Credits](#credits)
+* [Installation](#installation)
+* [Usage](#usage)
+  * [Examples](#examples)
+* [Customization](#customization)
+  * [cpsm_config.py](#cpsm_configpy)
+* [Uninstallation](#uninstallation)
+* [Contributing](#contributing)
+* [Credits](#credits)
 
-<!-- tocstop -->
+<!-- vim-markdown-toc -->
 
 CPSM is a tool for managing solutions to programming problems, particularly
 competitive programming problems. It allows one to easily create and save new
