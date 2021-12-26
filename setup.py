@@ -8,13 +8,13 @@ def readme():
 
 setup(
     name="cpsm",
-    version="1.1.1",  # Matches __init__.py
+    version="1.1.2",  # Matches __init__.py
     author="Bryon Tjanaka",
     author_email="bryon.tjanaka@gmail.com",
     description="Competitive Programming Solutions Manager",
     long_description=readme(),
     long_description_content_type="text/markdown",
-    url="http://btjanaka.net/cpsm",
+    url="http://github.com/btjanaka/cpsm",
     install_requires=[
         "Jinja2>=2.10.1",
     ],
